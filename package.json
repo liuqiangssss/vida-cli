@@ -1,5 +1,5 @@
 {
-  "name": "viva-cli",
+  "name": "vida-cli",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "viva": "./src/index.js"
+    "vida": "./src/index.js"
   },
   "dependencies": {
     "commander": "^11.1.0",

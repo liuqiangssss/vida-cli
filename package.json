@@ -1,0 +1,22 @@
+{
+  "name": "viva-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "author": "liuqiang",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "viva": "./src/index.js"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "copy-dir": "^1.3.0",
+    "download-git-repo": "^3.0.2",
+    "handlebars": "^4.7.8",
+    "inquirer": "^9.2.12",
+    "ora": "^7.0.1"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "todolist",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "format": "prettier --write './src/**/*.{ts,tsx,js,jsx}'"
+  },
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "vue-tsc": "^1.8.3",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@types/node": "18.15.3",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "rollup-plugin-visualizer": "^5.9.2",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-svgr": "^3.2.0"
+  }
+}

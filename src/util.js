@@ -165,3 +165,12 @@ export function handleNext({ projectName }) {
     resolve();
   });
 }
+export function handleNest({ projectName }) {
+  return new Promise((resolve, reject) => {
+    copyDir(`../templates/Nest`, `./${projectName}`);
+    const packageJson = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), `./${projectName}/package.json`), "utf8"));
+    packageJson.name = projectName;
+    fsWriteTempalte(`./${projectName}/package.json`, JSON.stringify(packageJson, null, 2));
+    resolve();
+  });
+}

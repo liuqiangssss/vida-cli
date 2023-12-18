@@ -2,7 +2,7 @@
 import { program } from "commander";
 import fs from "fs";
 import { selectProjectType, selectReactInfo, selectVueInfo } from "./inquirer.js";
-import { checkPath, handleReact, installDependencies, handleVue, handleNext } from "./util.js";
+import { checkPath, handleReact, installDependencies, handleVue, handleNext ,handleNest} from "./util.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import ora from "ora";
@@ -45,6 +45,12 @@ program
     if (projectType === "Next") {
       spinner.start();
       await handleNext({ projectName });
+      spinner.succeed("下载成功");
+      await installDependencies(projectName);
+    }
+    if (projectType === "Nest") {
+      spinner.start();
+      await handleNest({ projectName });
       spinner.succeed("下载成功");
       await installDependencies(projectName);
     }

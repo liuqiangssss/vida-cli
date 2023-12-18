@@ -16,7 +16,7 @@ const __dirname = path.dirname(__filename);
 
 export async function installDependencies(projectName) {
   spinner.start("正在按装依赖...");
-  await execPromisr(`cd  ${projectName} & yarn`);
+  await execPromisr(`cd ${projectName} && yarn`);
   spinner.succeed("依赖安装完成");
 }
 

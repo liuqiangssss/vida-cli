@@ -31,16 +31,16 @@ program
       spinner.start();
       await handleReact({ projectName, dependencies });
       spinner.succeed("下载成功");
-      await execPromisr(`cd ${projectName} & yarn format`);
       await installDependencies(projectName);
+      await execPromisr(`cd ${projectName} && yarn format`);
     }
     if (projectType === "Vue") {
       const { dependencies } = await selectVueInfo();
       spinner.start();
       await handleVue({ projectName, dependencies });
       spinner.succeed("下载成功");
-      await execPromisr(`cd ${projectName} & yarn format`);
       await installDependencies(projectName);
+      await execPromisr(`cd ${projectName} && yarn format`);
     }
     if (projectType === "Next") {
       spinner.start();

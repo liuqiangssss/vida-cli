@@ -146,7 +146,7 @@ import App from "./App.tsx";
 import { registerRouter } from "@/router";
 {{/if}}
 {{#if pinia}}
-import { setupStore } from "@store/index.ts";
+import { setupStore } from "@/store/index.ts";
 {{/if}}
 import { setDirectives } from "@/directives";
 const app = createApp(App);
@@ -188,17 +188,20 @@ export default defineComponent({
   },
 });
 `;
-export const vueHooks = `import { storeToRefs } from "pinia";
-import { useUserStore } from "@/store/modules/user";
+export const vueHooks = `import { useCounterStore } from '@/store/modules/counter';
 
 export function useUser() {
-  const userStore = useUserStore();
-  const { user } = storeToRefs(userStore);
-  const setUser = (user) => {
-    userStore.setUser(user);
+  const { count, doubleCount, increment } = useCounterStore();
+
+  const handleCounter = () => {
+    // Todo
+    increment();
   };
+
   return {
-    user,
-    setUser,
+    doubleCount,
+    count,
+    handleCounter
   };
-}`;
+}
+`;

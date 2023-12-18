@@ -19,5 +19,4 @@ export const vueDependencies = {
   postcss: "^8.4.27",
   tailwindcss: "^3.3.3",
   "vue-router": "4",
-  "@types/pinia": "^2.1.0",
 };

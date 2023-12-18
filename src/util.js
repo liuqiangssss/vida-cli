@@ -107,7 +107,7 @@ function handleVuePackageJson(projectName, dependencies) {
     }
     if (dep === "pinia") {
       packageJson.dependencies[dep] = vueDependencies[dep];
-      packageJson.devDependencies["@types/pinia"] = vueDependencies["@types/pinia"];
+      // packageJson.devDependencies["@types/pinia"] = vueDependencies["@types/pinia"];
     }
     packageJson.dependencies[dep] = vueDependencies[dep];
   });
@@ -126,7 +126,6 @@ function handleVueTemplateFiles(projectName, dependencies) {
   }
   if (dependencies.includes("vue-router")) {
     copyDir(`../templates/Vue-Router`, `./${projectName}/src/router`);
-    console.log(dependencies);
     const apptsxTemplate = compile(vueAppTsx, { router: true });
     fsWriteTempalte(`./${projectName}/src/App.tsx`, apptsxTemplate);
   }

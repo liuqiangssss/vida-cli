@@ -40,7 +40,7 @@ program
       await handleVue({ projectName, dependencies });
       spinner.succeed("下载成功");
       await installDependencies(projectName);
-      await execPromisr(`cd ${projectName} && yarn format`);
+      // await execPromisr(`cd ${projectName} && yarn format`);
     }
     if (projectType === "Next") {
       spinner.start();

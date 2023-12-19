@@ -1,4 +1,5 @@
 import inquirer from "inquirer";
+import chalk from "chalk";
 
 export async function selectProjectType() {
   return await inquirer.prompt([
@@ -12,7 +13,13 @@ export async function selectProjectType() {
       type: "list",
       name: "projectType",
       message: "请选择项目类型",
-      choices: ["React", "Vue", "Nest", "Next"],
+      prefix: chalk.yellow("★"), // 自定义前缀
+      choices: [
+        chalk.hex("#61dafb")("React"),
+        chalk.hex("#00b374")("Vue"),
+        chalk.hex("#ed2945")("Nest"),
+        "Next",
+      ]
     },
   ]);
 }
@@ -51,6 +58,34 @@ export async function selectVueInfo() {
         // { name: "element-plus" },
         { name: "pinia" },
       ],
+    },
+  ]);
+}
+export async function selectNestInfo() {
+  return await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "cookieGuard",
+      message: "是否需要cookieGuard",
+      default: false,
+      active: "yes",
+      inactive: "no",
+    },
+    {
+      type: "confirm",
+      name: "userCRUD",
+      message: "是否需要crud示例",
+      default: false,
+      active: "yes",
+      inactive: "no",
+    },
+    {
+      type: "confirm",
+      name: "validFilter",
+      message: "是否需要参数校验过滤器",
+      default: false,
+      active: "yes",
+      inactive: "no",
     },
   ]);
 }

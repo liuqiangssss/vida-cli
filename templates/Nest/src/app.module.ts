@@ -3,18 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { CookieGuard } from './guard/cookie.guard';
-import { HttpExceptionFilter } from './filter/exception.filter';
 import { ValidationExceptionFilter } from './filter/valid.filter';
+import { UserModule } from './user/user.module';
+import { LoggerModule } from './modules/logger.module';
 
 @Module({
-  imports: [],
+  imports: [UserModule, LoggerModule],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
     {
       provide: APP_FILTER,
       useClass: ValidationExceptionFilter,

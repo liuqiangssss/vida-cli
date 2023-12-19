@@ -19,7 +19,6 @@ export class ValidationExceptionFilter extends BaseExceptionFilter {
       exception.getStatus() === HttpStatus.BAD_REQUEST
     ) {
       const errors = exception.getResponse() as any;
-
       const res = new BusinessException(
         errors.message.join(),
         400,

@@ -12,9 +12,9 @@ export class CookieGuard implements CanActivate {
       return true;
     }
     try {
-      const sessionId = request.cookies['sessionId'];
+      const sessionId = request.cookies?.sessionId;
       if (!sessionId) {
-       // Throw an error if the cookie is not found
+        // Throw an error if the cookie is not found
       }
       return true; // 放行
     } catch (error) {

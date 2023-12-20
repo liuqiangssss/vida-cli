@@ -21,8 +21,8 @@ export const vueDependencies = {
   tailwindcss: "^3.3.3",
   "vue-router": "4",
 };
-export const projectTypeEnum = {
-  [chalk.hex("#61dafb")("React")]: "React",
-  [chalk.hex("#00b374")("Vue")]: "Vue",
-  [chalk.hex("#ed2945")("Nest")]: "Nest",
-};
+// export const projectTypeEnum = {
+//   [chalk.hex("#61dafb")("React")]: "React",
+//   [chalk.hex("#00b374")("Vue")]: "Vue",
+//   [chalk.hex("#ed2945")("Nest")]: "Nest",
+// };

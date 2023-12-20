@@ -1,28 +1,24 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
+import prompts from "prompts";
 
 export async function selectProjectType() {
-  return await inquirer.prompt([
+  return await prompts([
     {
-      type: "input",
+      type: "text",
       name: "projectName",
       message: "请输入项目名称",
-      default: "my-app",
+      initial: "my-app",
     },
     {
-      type: "list",
+      type: "select",
       name: "projectType",
       message: "请选择项目类型",
-      prefix: chalk.yellow("★"), // 自定义前缀
-      choices: [
-        chalk.hex("#61dafb")("React"),
-        chalk.hex("#00b374")("Vue"),
-        chalk.hex("#ed2945")("Nest"),
-        "Next",
-      ]
+      choices: [{ title: chalk.hex("#61dafb")("React"), value: "React" }, { title: chalk.hex("#00b374")("Vue"), value: "VUe" }, { title: chalk.hex("#ed2945")("Nest"), value: "Nest" }, "Next"],
     },
   ]);
 }
+
 export async function selectReactInfo() {
   return await inquirer.prompt([
     {
@@ -62,28 +58,28 @@ export async function selectVueInfo() {
   ]);
 }
 export async function selectNestInfo() {
-  return await inquirer.prompt([
+  return await prompts([
     {
-      type: "confirm",
+      type: "toggle",
       name: "cookieGuard",
       message: "是否需要cookieGuard",
-      default: false,
+      initial: true,
       active: "yes",
       inactive: "no",
     },
     {
-      type: "confirm",
+      type: "toggle",
       name: "userCRUD",
       message: "是否需要crud示例",
-      default: false,
+      initial: true,
       active: "yes",
       inactive: "no",
     },
     {
-      type: "confirm",
+      type: "toggle",
       name: "validFilter",
       message: "是否需要参数校验过滤器",
-      default: false,
+      initial: true,
       active: "yes",
       inactive: "no",
     },

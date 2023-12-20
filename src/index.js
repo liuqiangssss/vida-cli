@@ -1,35 +1,20 @@
 #!/usr/bin/env node
 import { program } from "commander";
 import fs from "fs";
-import {
-  selectProjectType,
-  selectReactInfo,
-  selectVueInfo,
-  selectNestInfo,
-} from "./inquirer.js";
-import {
-  checkPath,
-  handleReact,
-  installDependencies,
-  handleVue,
-  handleNext,
-  handleNest,
-} from "./util.js";
+import { selectProjectType, selectReactInfo, selectVueInfo, selectNestInfo } from "./inquirer.js";
+import { checkPath, handleReact, installDependencies, handleVue, handleNext, handleNest } from "./util.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import ora from "ora";
 // import chalk from "chalk";
 import { exec } from "child_process";
 import util from "util";
-import { projectTypeEnum } from "./common.js";
 const execPromisr = util.promisify(exec);
 const spinner = ora("下载中...");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const packageJson = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8")
-);
+const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
 program.version(packageJson.version, "-v, --version, -V", "显示程序版本号");
 program
   .command("create")
@@ -41,7 +26,7 @@ program
       console.log("文件夹已存在");
       return;
     }
-    if (projectTypeEnum[projectType] === "React") {
+    if (projectType === "React") {
       const { dependencies } = await selectReactInfo();
       spinner.start();
       await handleReact({ projectName, dependencies });
@@ -49,7 +34,7 @@ program
       await installDependencies(projectName);
       await execPromisr(`cd ${projectName} && yarn format`);
     }
-    if (projectTypeEnum[projectType] === "Vue") {
+    if (projectType === "Vue") {
       const { dependencies } = await selectVueInfo();
       spinner.start();
       await handleVue({ projectName, dependencies });
@@ -57,13 +42,13 @@ program
       await installDependencies(projectName);
       // await execPromisr(`cd ${projectName} && yarn format`);
     }
-    if (projectTypeEnum[projectType] === "Next") {
+    if (projectType === "Next") {
       spinner.start();
       await handleNext({ projectName });
       spinner.succeed("下载成功");
       await installDependencies(projectName);
     }
-    if (projectTypeEnum[projectType] === "Nest") {
+    if (projectType === "Nest") {
       // spinner.start();
       const res = await selectNestInfo();
       console.log(res);

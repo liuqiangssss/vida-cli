@@ -6,7 +6,7 @@ import { exec } from "child_process";
 import util from "util";
 import ora from "ora";
 import Handlebars from "handlebars";
-import { reactAppTsx, viteConfigTs, axiosTemplate, tailwindcss, vueAppTsx, vueHooks, vueMainTs } from "./templates.js";
+import { reactAppTsx, viteConfigTs, axiosTemplate, tailwindcss, vueAppTsx, vueHooks, vueMainTs, reactPackageJson } from "./templates.js";
 import { reactDependencies, vueDependencies } from "./common.js";
 const spinner = ora("下载中...");
 const execPromisr = util.promisify(exec);
@@ -62,23 +62,22 @@ function handleReactTemplateFiles(projectName, dependencies) {
   }
   fsWriteTempalte(`./${projectName}/src/App.tsx`, template);
 }
+const checkIncludes = (dependencies, dep) => dependencies.includes(dep);
 // 处理ReactPackageJson模板
 function handleReactPackageJson(projectName, dependencies) {
-  const packageJson = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), `./${projectName}/package.json`), "utf8"));
-  packageJson.name = projectName;
-  dependencies.forEach((dep) => {
-    if (dep === "react-redux") {
-      packageJson.dependencies[dep] = reactDependencies[dep];
-      packageJson.dependencies["@reduxjs/toolkit"] = reactDependencies["@reduxjs/toolkit"];
-    }
-    if (dep === "tailwindcss") {
-      packageJson.dependencies[dep] = reactDependencies[dep];
-      packageJson.dependencies["postcss"] = reactDependencies["postcss"];
-      packageJson.dependencies["autoprefixer"] = reactDependencies["autoprefixer"];
-    }
-    packageJson.dependencies[dep] = reactDependencies[dep];
+  const template = compile(reactPackageJson,{
+    projectName,
+    '@ant-design/icons':checkIncludes(dependencies,"@ant-design/icons"),
+    antd:checkIncludes(dependencies,"antd"),
+    tailwindcss:checkIncludes(dependencies,"tailwindcss"),
+    axios:checkIncludes(dependencies,"axios"),
+    dayjs:checkIncludes(dependencies,"dayjs"),
+   'react-redux':checkIncludes(dependencies,"react-redux"),
+   classnames:checkIncludes(dependencies,"classnames"),
+   husky:checkIncludes(dependencies,"husky"),
+   'react-router-dom':checkIncludes(dependencies,"react-router-dom"),
   });
-  fsWriteTempalte(`./${projectName}/package.json`, JSON.stringify(packageJson, null, 2));
+  fsWriteTempalte(`./${projectName}/package.json`, template ,null, 2);
 }
 // 处理viteConfigTs模板
 function handleViteTemplate(projectName, projectType, includeTailWind) {

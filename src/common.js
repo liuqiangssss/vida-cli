@@ -11,6 +11,7 @@ export const reactDependencies = {
   "react-redux": "^8.1.2",
   tailwindcss: "^3.3.3",
   "react-router-dom": "^6.14.2",
+  "husky": "^8.0.3",
 };
 export const vueDependencies = {
   axios: "^1.4.0",

@@ -35,6 +35,7 @@ export async function selectReactInfo() {
         { name: "tailwindcss" },
         { name: "dayjs" },
         { name: "classnames" },
+        { name: "husky" },
       ],
     },
   ]);

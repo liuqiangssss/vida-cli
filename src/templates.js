@@ -205,3 +205,89 @@ export function useUser() {
   };
 }
 `;
+
+
+export const reactPackageJson= `{
+  "name": "{{projectName}}",
+  "private": true, 
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    {{#if husky}}
+    "prepare": "husky install", 
+    "lint-staged" : "lint-staged",
+    {{/if}}
+    "format": "prettier --write './src/**/*.{ts,tsx,js,jsx}'"
+  },
+  {{#if husky}}
+  "lint-staged": {
+    "./src/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix --quiet",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  {{/if}}
+  "dependencies": {
+    {{#if @ant-design/icons}}
+    "@ant-design/icons": "^5.2.5",
+    {{/if}}
+    {{#if antd}}
+    "antd": "^5.8.4",
+    {{/if}}
+    {{#if tailwindcss}}
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.29",
+    "tailwindcss": "^3.3.3",
+    {{/if}}
+    {{#if axios}}
+    "axios": "^1.5.0",
+    {{/if}}
+    {{#if dayjs}}
+    "dayjs": "^1.11.9",
+    {{/if}}
+    {{#if react-redux}}
+    "@reduxjs/toolkit": "^1.9.5",
+    "react-redux": "^8.1.2",
+    {{/if}}
+    {{#if classnames}}
+    "classnames": "^2.3.2",
+    {{/if}}
+    {{#if react-router-dom}}
+    "react-router-dom": "^6.14.2",
+    {{/if}}
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.3",
+    "@types/node": "18.15.3",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "prettier": "^3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "rollup-plugin-visualizer": "^5.9.2",
+    "sass": "^1.53.0",
+    "typescript": "^5.0.2",
+    {{#if husky}}
+    "husky": "^8.0.3",
+    "lint-staged": "^10.5.4",
+    "commitlint": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    {{/if}}
+    "vite": "^4.4.5",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-svgr": "^3.2.0"
+  }
+}`

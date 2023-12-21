@@ -6,7 +6,7 @@ import { exec } from "child_process";
 import util from "util";
 import ora from "ora";
 import Handlebars from "handlebars";
-import { reactAppTsx, viteConfigTs, axiosTemplate, tailwindcss, vueAppTsx, vueHooks, vueMainTs, reactPackageJson } from "./templates.js";
+import { reactAppTsx, viteConfigTs, tailwindcss, vueAppTsx, vueHooks, vueMainTs, reactHooks, reactPackageJson, vuePackageJson } from "./templates.js";
 import { reactDependencies, vueDependencies } from "./common.js";
 const spinner = ora("下载中...");
 const execPromisr = util.promisify(exec);
@@ -33,11 +33,12 @@ function copyDir(from, to, options) {
 function fsWriteTempalte(pathName, template) {
   fs.writeFileSync(path.resolve(process.cwd(), pathName), template, "utf8");
 }
+const checkIncludes = (dependencies, dep) => dependencies.includes(dep);
+
 // 处理React模板
 function handleReactTemplateFiles(projectName, dependencies) {
   if (dependencies.includes("axios")) {
-    const template = compile(axiosTemplate);
-    fsWriteTempalte(`./${projectName}/src/utils/request.ts`, template);
+    copyDir(`../templates/Axios`, `./${projectName}/src/utils`);
   }
   if (dependencies.includes("tailwindcss")) {
     const template = compile(tailwindcss);
@@ -48,36 +49,33 @@ function handleReactTemplateFiles(projectName, dependencies) {
     copyDir(`../templates/React-Router`, `./${projectName}/src`);
   }
   if (dependencies.includes("react-redux")) {
+    const template = compile(reactHooks);
+    fsWriteTempalte(`./${projectName}/src/App.tsx`, template);
     copyDir(`../templates/Redux`, `./${projectName}/src/store`);
   }
-  let template = "";
-  if (dependencies.includes("react-router-dom") && dependencies.includes("react-redux")) {
-    template = compile(reactAppTsx, { includeRouter: true, includeRedux: true });
-  } else if (dependencies.includes("react-router-dom")) {
-    template = compile(reactAppTsx, { includeRouter: true });
-  } else if (dependencies.includes("react-redux")) {
-    template = compile(reactAppTsx, { includeRedux: true });
-  } else {
-    template = compile(reactAppTsx);
-  }
-  fsWriteTempalte(`./${projectName}/src/App.tsx`, template);
+  const template = compile(reactAppTsx, {
+    includeRouter: checkIncludes(dependencies, "react-router-dom"),
+    includeRedux: checkIncludes(dependencies, " react-redux"),
+    antd: checkIncludes(dependencies, "antd"),
+  });
+  fsWriteTempalte(`./${projectName}/src/App.tsx`, template.replace(/&#123;/g, "}").replace(/&#125;/g, "{"));
 }
-const checkIncludes = (dependencies, dep) => dependencies.includes(dep);
+
 // 处理ReactPackageJson模板
 function handleReactPackageJson(projectName, dependencies) {
-  const template = compile(reactPackageJson,{
+  const template = compile(reactPackageJson, {
     projectName,
-    '@ant-design/icons':checkIncludes(dependencies,"@ant-design/icons"),
-    antd:checkIncludes(dependencies,"antd"),
-    tailwindcss:checkIncludes(dependencies,"tailwindcss"),
-    axios:checkIncludes(dependencies,"axios"),
-    dayjs:checkIncludes(dependencies,"dayjs"),
-   'react-redux':checkIncludes(dependencies,"react-redux"),
-   classnames:checkIncludes(dependencies,"classnames"),
-   husky:checkIncludes(dependencies,"husky"),
-   'react-router-dom':checkIncludes(dependencies,"react-router-dom"),
+    "@ant-design/icons": checkIncludes(dependencies, "@ant-design/icons"),
+    antd: checkIncludes(dependencies, "antd"),
+    tailwindcss: checkIncludes(dependencies, "tailwindcss"),
+    axios: checkIncludes(dependencies, "axios"),
+    dayjs: checkIncludes(dependencies, "dayjs"),
+    "react-redux": checkIncludes(dependencies, "react-redux"),
+    classnames: checkIncludes(dependencies, "classnames"),
+    husky: checkIncludes(dependencies, "husky"),
+    "react-router-dom": checkIncludes(dependencies, "react-router-dom"),
   });
-  fsWriteTempalte(`./${projectName}/package.json`, template ,null, 2);
+  fsWriteTempalte(`./${projectName}/package.json`, template);
 }
 // 处理viteConfigTs模板
 function handleViteTemplate(projectName, projectType, includeTailWind) {
@@ -96,27 +94,21 @@ export function handleReact({ projectName, dependencies }) {
 }
 // 处理VuePackageJson模板
 function handleVuePackageJson(projectName, dependencies) {
-  const packageJson = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), `./${projectName}/package.json`), "utf8"));
-  packageJson.name = projectName;
-  dependencies.forEach((dep) => {
-    if (dep === "tailwindcss") {
-      packageJson.dependencies[dep] = vueDependencies[dep];
-      packageJson.dependencies["postcss"] = vueDependencies["postcss"];
-      packageJson.dependencies["autoprefixer"] = vueDependencies["autoprefixer"];
-    }
-    if (dep === "pinia") {
-      packageJson.dependencies[dep] = vueDependencies[dep];
-      // packageJson.devDependencies["@types/pinia"] = vueDependencies["@types/pinia"];
-    }
-    packageJson.dependencies[dep] = vueDependencies[dep];
+  const template = compile(vuePackageJson, {
+    projectName,
+    tailwindcss: checkIncludes(dependencies, "tailwindcss"),
+    axios: checkIncludes(dependencies, "axios"),
+    dayjs: checkIncludes(dependencies, "dayjs"),
+    pinia: checkIncludes(dependencies, "react-redux"),
+    husky: checkIncludes(dependencies, "husky"),
+    "vue-router": checkIncludes(dependencies, "vue-router"),
   });
-  fsWriteTempalte(`./${projectName}/package.json`, JSON.stringify(packageJson, null, 2));
+  fsWriteTempalte(`./${projectName}/package.json`, template);
 }
 // 处理Vue模板
 function handleVueTemplateFiles(projectName, dependencies) {
   if (dependencies.includes("axios")) {
-    const template = compile(axiosTemplate);
-    fsWriteTempalte(`./${projectName}/src/utils/request.ts`, template);
+    copyDir(`../templates/Axios`, `./${projectName}/src/utils`);
   }
   if (dependencies.includes("tailwindcss")) {
     const template = compile(tailwindcss);
@@ -125,24 +117,15 @@ function handleVueTemplateFiles(projectName, dependencies) {
   }
   if (dependencies.includes("vue-router")) {
     copyDir(`../templates/Vue-Router`, `./${projectName}/src/router`);
-    const apptsxTemplate = compile(vueAppTsx, { router: true });
-    fsWriteTempalte(`./${projectName}/src/App.tsx`, apptsxTemplate);
   }
   if (dependencies.includes("pinia")) {
     copyDir(`../templates/Pinia`, `./${projectName}/src/store`);
     const hookTemplate = compile(vueHooks);
-    fsWriteTempalte(`./${projectName}/src/hooks/useUser.ts`, hookTemplate);
+    fsWriteTempalte(`./${projectName}/src/hooks/useCount.ts`, hookTemplate);
   }
-  let template = "";
-  if (dependencies.includes("vue-router") && dependencies.includes("pinia")) {
-    template = compile(vueMainTs, { router: true, pinia: true });
-  } else if (dependencies.includes("vue-router")) {
-    template = compile(vueMainTs, { router: true });
-  } else if (dependencies.includes("pinia")) {
-    template = compile(vueMainTs, { pinia: true });
-  } else {
-    template = compile(vueMainTs);
-  }
+  const apptsxTemplate = compile(vueAppTsx, { router: checkIncludes(dependencies, "vue-router") });
+  fsWriteTempalte(`./${projectName}/src/App.tsx`, apptsxTemplate);
+  const template = compile(vueMainTs, { router: checkIncludes(dependencies, "vue-router"), pinia: checkIncludes(dependencies, "pinia") });
   fsWriteTempalte(`./${projectName}/src/main.ts`, template);
 }
 export function handleVue({ projectName, dependencies }) {

@@ -54,6 +54,7 @@ export async function selectVueInfo() {
         { name: "vue-router" },
         // { name: "element-plus" },
         { name: "pinia" },
+        { name: "husky" },
       ],
     },
   ]);

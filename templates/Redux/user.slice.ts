@@ -1,12 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 // import type {IUser} from "@/types";
-interface IUser {}
-interface IUserState {
-  user: IUser | null;
+interface IUser {
+  name: string;
 }
 
-const initialState: IUserState = {
-  user: null,
+const initialState: IUser = {
+  name: "",
 };
 
 export const userSlice = createSlice({
@@ -14,8 +13,8 @@ export const userSlice = createSlice({
   // `createSlice` 将从 `initialState` 参数推断 state 类型
   initialState,
   reducers: {
-    initUserInfo: (state, action: PayloadAction<IUser>) => {
-      state.user = action.payload;
+    initUserInfo: (state: IUser, action: PayloadAction<IUser>) => {
+      state = action.payload;
     },
   },
 });

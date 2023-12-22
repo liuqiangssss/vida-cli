@@ -14,7 +14,14 @@ export async function selectProjectType() {
       type: "select",
       name: "projectType",
       message: "请选择项目类型",
-      choices: [{ title: chalk.hex("#61dafb")("React"), value: "React" }, { title: chalk.hex("#00b374")("Vue"), value: "Vue" }, { title: chalk.hex("#ed2945")("Nest"), value: "Nest" }, "Next"],
+      choices: [
+        { title: chalk.hex("#61dafb")("React"), value: "React" },
+        { title: chalk.hex("#00b374")("Vue"), value: "Vue" },
+        { title: chalk.hex("#ed2945")("Nest"), value: "Nest" },
+        "Next",
+        { title: chalk.hex("#61dafb")("Electron-React"), value: "Electron-React" },
+        { title: chalk.hex("#00b374")("Electron-Vue"), value: "Electron-Vue" },
+      ],
     },
   ]);
 }

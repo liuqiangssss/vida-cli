@@ -7,7 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import ora from "ora";
 // import chalk from "chalk";
-import { exec } from "child_process";
+import { exec ,execSync} from "child_process";
 import util from "util";
 const execPromisr = util.promisify(exec);
 const spinner = ora("下载中...");
@@ -16,6 +16,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
 program.version(packageJson.version, "-v, --version, -V", "显示程序版本号");
+program
+  .command("install")
+  .alias("i")
+  .description("Install dependencies")
+  .action(async () => {
+    // await execPromisr(`yarn`);
+    execSync('yarn', { stdio: 'inherit' });
+  });
 program
   .command("create")
   .alias("init")
@@ -40,7 +48,7 @@ program
       await handleVue({ projectName, dependencies });
       spinner.succeed("下载成功");
       await installDependencies(projectName);
-      // await execPromisr(`cd ${projectName} && yarn format`);
+      await execPromisr(`cd ${projectName} && yarn format`);
     }
     if (projectType === "Next") {
       spinner.start();

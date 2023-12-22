@@ -2,12 +2,12 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import copydir from "copy-dir";
-import { exec } from "child_process";
 import util from "util";
 import ora from "ora";
 import Handlebars from "handlebars";
 import { reactAppTsx, viteConfigTs, tailwindcss, vueAppTsx, vueHooks, vueMainTs, reactHooks, reactPackageJson, vuePackageJson } from "./templates.js";
 import { reactDependencies, vueDependencies } from "./common.js";
+import { exec ,execSync} from "child_process";
 const spinner = ora("下载中...");
 const execPromisr = util.promisify(exec);
 
@@ -15,8 +15,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export async function installDependencies(projectName) {
-  spinner.start("正在按装依赖...");
-  await execPromisr(`cd ${projectName} && yarn`);
+  spinner.succeed("正在按装依赖...");
+  // await execPromisr(`cd ${projectName} && yarn`);
+  execSync(`cd ${projectName} && yarn`, { stdio: 'inherit' });
   spinner.succeed("依赖安装完成");
 }
 
@@ -58,7 +59,7 @@ function handleReactTemplateFiles(projectName, dependencies) {
     includeRedux: checkIncludes(dependencies, " react-redux"),
     antd: checkIncludes(dependencies, "antd"),
   });
-  fsWriteTempalte(`./${projectName}/src/App.tsx`, template.replace(/&#123;/g, "}").replace(/&#125;/g, "{"));
+  fsWriteTempalte(`./${projectName}/src/App.tsx`, template.replace(/&#123;/g, "{").replace(/&#125;/g, "}"));
 }
 
 // 处理ReactPackageJson模板
@@ -99,7 +100,7 @@ function handleVuePackageJson(projectName, dependencies) {
     tailwindcss: checkIncludes(dependencies, "tailwindcss"),
     axios: checkIncludes(dependencies, "axios"),
     dayjs: checkIncludes(dependencies, "dayjs"),
-    pinia: checkIncludes(dependencies, "react-redux"),
+    pinia: checkIncludes(dependencies, "pinia"),
     husky: checkIncludes(dependencies, "husky"),
     "vue-router": checkIncludes(dependencies, "vue-router"),
   });

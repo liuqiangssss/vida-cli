@@ -24,9 +24,9 @@ const App: React.FC = () => {
         token: {
             colorPrimary: '#04b8ae',
            },
-           &#125;&#1235
+           &#125;&#125;
      >
-     <AntdApp   message=&#123;&#123; maxCount: 1   &#125;&#125;>
+     <AntdApp   message=&#123;&#123; maxCount: 1 &#125;&#125; >
      {{/if}}
 
         {{#if includeRedux}}

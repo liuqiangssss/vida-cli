@@ -2,7 +2,7 @@
 import { program } from "commander";
 import fs from "fs";
 import { selectProjectType, selectReactInfo, selectVueInfo, selectNestInfo } from "./inquirer.js";
-import { checkPath, handleReact, installDependencies, handleVue, handleNext, handleNest } from "./util.js";
+import { checkPath, handleReact, installDependencies, handleVue, handleNext, handleNest, handleElectronReact, handleElectronVue } from "./util.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import ora from "ora";
@@ -65,13 +65,13 @@ program
     }
     if (projectType === "Electron-React") {
       spinner.start();
-      await handleNest({ projectName });
+      await handleElectronReact({ projectName });
       spinner.succeed("下载成功");
       await installDependencies(projectName);
     }
-    if (projectType === "Electron-React") {
+    if (projectType === "Electron-Vue") {
       spinner.start();
-      await handleNest({ projectName });
+      await handleElectronVue({ projectName });
       spinner.succeed("下载成功");
       await installDependencies(projectName);
     }

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import copydir from "copy-dir";
-import { exec } from "child_process";
+import { exec, execSync } from "child_process";
 import util from "util";
 import ora from "ora";
 import Handlebars from "handlebars";
@@ -16,7 +16,8 @@ const __dirname = path.dirname(__filename);
 
 export async function installDependencies(projectName) {
   spinner.start("正在按装依赖...");
-  await execPromisr(`cd ${projectName} && yarn`);
+  // await execPromisr(`cd ${projectName} && yarn`);
+  execSync(`cd ${projectName} && yarn`, { stdio: "inherit" });
   spinner.succeed("依赖安装完成");
 }
 

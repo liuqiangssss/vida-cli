@@ -1,20 +1,34 @@
 #!/usr/bin/env node
 import { program } from "commander";
 import fs from "fs";
-import { selectProjectType, selectReactInfo, selectVueInfo, selectNestInfo } from "./inquirer.js";
-import { checkPath, handleReact, installDependencies, handleVue, handleNext, handleNest } from "./util.js";
+import {
+  selectProjectType,
+  selectReactInfo,
+  selectVueInfo,
+  selectNestInfo,
+} from "./inquirer.js";
+import {
+  checkPath,
+  handleReact,
+  installDependencies,
+  handleVue,
+  handleNext,
+  handleNest,
+} from "./util.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import ora from "ora";
 // import chalk from "chalk";
-import { exec ,execSync} from "child_process";
+import { exec, execSync } from "child_process";
 import util from "util";
 const execPromisr = util.promisify(exec);
 const spinner = ora("下载中...");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
+const packageJson = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8")
+);
 program.version(packageJson.version, "-v, --version, -V", "显示程序版本号");
 program
   .command("install")
@@ -22,7 +36,7 @@ program
   .description("Install dependencies")
   .action(async () => {
     // await execPromisr(`yarn`);
-    execSync('yarn', { stdio: 'inherit' });
+    execSync("yarn", { stdio: "inherit" });
   });
 program
   .command("create")
@@ -57,12 +71,11 @@ program
       await installDependencies(projectName);
     }
     if (projectType === "Nest") {
-      // spinner.start();
-      const res = await selectNestInfo();
-      console.log(res);
-      // await handleNest({ projectName });
-      // spinner.succeed("下载成功");
-      // await installDependencies(projectName);
+      const { cookieGuard, userCRUD, validFilter } = await selectNestInfo();
+      spinner.start();
+      await handleNest({ projectName });
+      spinner.succeed("下载成功");
+      await installDependencies(projectName);
     }
   });
 program.parse(process.argv);

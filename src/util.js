@@ -59,7 +59,7 @@ function handleReactTemplateFiles(projectName, dependencies) {
     includeRedux: checkIncludes(dependencies, " react-redux"),
     antd: checkIncludes(dependencies, "antd"),
   });
-  fsWriteTempalte(`./${projectName}/src/App.tsx`, template.replace(/&#123/g, "}").replace(/&#125/g, "{"));
+  fsWriteTempalte(`./${projectName}/src/App.tsx`, template.replace(/&#123;/g, "{").replace(/&#125;/g, "}"));
 }
 
 // 处理ReactPackageJson模板

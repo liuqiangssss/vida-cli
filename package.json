@@ -1,6 +1,6 @@
 {
   "name": "vida-cli",
-  "version": "1.0.4",
+  "version": "1.0.4-bug.0",
   "main": "index.js",
   "type": "module",
   "author": "liuqiang",
